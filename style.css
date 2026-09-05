@@ -140,3 +140,32 @@ body {
   margin-top: 20px;
   font-size: 0.9rem;
 }
+/* ==================== MOBİL UYUMLULUK (RESPONSIVE) ==================== */
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .map-wrapper {
+    height: 50vh; /* Harita telefon ekranının yarısını kaplar */
+    min-height: 320px;
+  }
+
+  .side-panel {
+    max-width: 100%;
+    min-width: 100%;
+    height: auto;
+    border-left: none;
+    border-top: 1px solid #3b1124;
+  }
+
+  .quake-list {
+    max-height: 400px; /* Liste altta rahatça kaydırılır */
+  }
+}
