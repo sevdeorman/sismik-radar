@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canlı Deprem Radarı & Sismik Analiz</title>
+
+  <!-- Leaflet Harita Kütüphanesi -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Üst Menü -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="pulse-dot"></span>
+      <h1>SismikRadar TR</h1>
+    </div>
+    <div class="status-box">
+      <span id="live-indicator">● Canlı Takip</span>
+      <span id="last-update">Veri bekleniyor...</span>
+    </div>
+  </header>
+
+  <!-- Ana Dashboard -->
+  <main class="dashboard-container">
+    
+    <!-- Harita Alanı -->
+    <section class="map-wrapper">
+      <!-- Harita Modu Butonları -->
+      <div style="position: absolute; top: 15px; right: 15px; z-index: 1000; background: rgba(26, 15, 22, 0.9); padding: 6px; border-radius: 8px; display: flex; gap: 6px; border: 1px solid #4c0519;">
+        <button id="btn-points" style="background: #881337; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">Noktasal</button>
+        <button id="btn-heat" style="background: transparent; color: #d1b8c4; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">Isı Haritası</button>
+      </div>
+
+      <div id="map" style="width: 100%; height: 100%;"></div>
+    </section>
+
+    <!-- Yan Panel -->
+    <aside class="side-panel">
+      <div class="panel-header">
+        <h2>Son Sarsıntılar</h2>
+        <span id="quake-count" class="badge">0 Deprem</span>
+      </div>
+
+      <!-- Konum & Toplanma Alanı Paneli -->
+      <div id="user-location-box" style="background: #1f0f18; margin: 12px; padding: 12px; border-radius: 8px; border: 1px dashed #5c142c; font-size: 0.85rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="color: #e2b9cb;">Konum Analizi:</span>
+          <button id="locate-btn" style="background: #9f1239; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">Konumumu Bul</button>
+        </div>
+        <div id="nearest-quake-info" style="margin-top: 8px; color: #ffe4e6; font-weight: 600;">
+          Mesafe hesabı için konum izni bekleniyor...
+        </div>
+
+        <!-- En Yakın Toplanma Alanı Bilgisi -->
+        <div id="assembly-area-info" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #5c142c; font-size: 0.8rem; color: #d1b8c4; display: none;">
+          🛡️ En Yakın Toplanma Alanı: <b id="assembly-name" style="color: #4ade80;">-</b>
+          <div id="assembly-dist" style="font-size: 0.75rem; color: #ffe4e6; margin-top: 2px;"></div>
+        </div>
+      </div>
+
+      <!-- Filtreleme ve Arama Çubuğu -->
+      <div class="filter-box" style="padding: 0 12px 12px 12px; display: flex; flex-direction: column; gap: 8px;">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Şehir / Bölge ara (örn: Malatya)..." 
+          style="width: 100%; background: #1f0f18; border: 1px solid #4c0519; color: #ffe4e6; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; outline: none;"
+        >
+
+        <div style="background: #1f0f18; padding: 8px 12px; border-radius: 6px; border: 1px solid #4c0519;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #d1b8c4; margin-bottom: 4px;">
+            <span>Minimum Büyüklük:</span>
+            <strong id="mag-filter-val" style="color: #fb7185; font-size: 0.85rem;">0.0+</strong>
+          </div>
+          <input 
+            type="range" 
+            id="mag-slider" 
+            min="0" 
+            max="6" 
+            step="0.5" 
+            value="0" 
+            style="width: 100%; cursor: pointer; accent-color: #be123c;"
+          >
+        </div>
+      </div>
+
+      <!-- Deprem Listesi -->
+      <div id="quake-list" class="quake-list">
+        <p class="loading-text">Sismik veriler yükleniyor...</p>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Kütüphaneler -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
